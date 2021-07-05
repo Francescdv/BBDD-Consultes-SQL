@@ -55,5 +55,5 @@ INNER JOIN carriers ON flights.UniqueCarrier = carriers.CarrierCode
 GROUP BY Description 
 HAVING AVG(ArrDelay) > 10
 ORDER BY avgDelay DESC
-LIMIT 10
+
 
