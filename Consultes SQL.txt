@@ -1,0 +1,59 @@
+Exercici 1
+Quantitat de registres de la taula de vols:
+Resultat:
+SELECT COUNT(flightID) FROM `flights`
+
+
+Exercici 2
+Retard promig de sortida i arribada segons l’aeroport origen.
+Resultat:
+SELECT origin, AVG(ArrDelay) AS "prom_arribades", AVG(DepDelay) AS prom_sortides FROM flights GROUP BY Origin
+
+
+Exercici 3
+Retard promig d’arribada dels vols, per mesos, anys i segons l’aeroport origen. A més, volen que els resultat es mostrin de la següent forma (fixa’t en l’ordre de les files):
+Resultat:
+SELECT origin, colYear, colMonth, AVG(ArrDelay) AS "prom_arribades" FROM flights 
+GROUP BY Origin ASC, colYear ASC, colMonth ASC
+
+
+Exercici 4
+Retard promig d’arribada dels vols, per mesos, anys i segons l’aeroport origen (mateixa consulta que abans i amb el mateix ordre). Però a més, ara volen que en comptes del codi de l’aeroport es mostri el nom de la ciutat.
+Resultat:
+SELECT `usairports`.`City`, colYear, colMonth, AVG(ArrDelay) AS "prom_arribades" FROM flights INNER JOIN usairports ON flights.Origin = usairports.IATA GROUP BY City ASC, colYear ASC, colMonth ASC
+
+
+
+Exercici 5
+Les companyies amb més vols cancel·lats, per mesos i any. A més, han d'estar ordenades de forma que les companyies amb més cancel·lacions apareguin les primeres. Les companyies sense vols cancel·lats no hauran d'aparèixer.
+
+Resultat: 
+SELECT carriers.Description, colYear, colMonth, SUM(Cancelled) as"TotalCancelled" FROM `flights` 
+INNER JOIN carriers ON flights.UniqueCarrier = carriers.CarrierCode  
+GROUP BY Cancelled ASC, colYear ASC, colMonth ASC
+HAVING SUM(cancelled) > 0
+ORDER BY totalCancelled DESC
+
+
+Exercici 6
+L’identificador dels 10 avions que més distància han recorregut fent vol
+Resultat:
+SELECT TailNum, SUM(distance) AS "totalDistance" 
+FROM flights
+WHERE TailNum IS NOT Null
+GROUP BY TailNum
+HAVING SUM(distance) 
+ORDER BY `totalDistance`  DESC LIMIT 10
+
+
+Exercici 7
+Companyies amb el seu retard promig només d’aquelles les quals els seus vols arriben al seu destí amb un retràs promig major de 10 minuts.
+
+Resultat:
+SELECT carriers.Description, AVG(ArrDelay) as"avgDelay" FROM `flights` 
+INNER JOIN carriers ON flights.UniqueCarrier = carriers.CarrierCode  
+GROUP BY Description 
+HAVING AVG(ArrDelay) > 10
+ORDER BY avgDelay DESC
+LIMIT 10
+
